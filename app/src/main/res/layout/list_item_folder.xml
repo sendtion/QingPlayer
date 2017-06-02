@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="5dp">
+
+    <ImageView
+        android:id="@+id/iv_video_album"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/ic_folder_black_24dp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="16dp"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/iv_video_album">
+
+        <TextView
+            android:id="@+id/tv_album_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:text="This is a name."
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/tv_video_count"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:text="0 item"
+            android:textSize="12sp"/>
+    </RelativeLayout>
+
+</RelativeLayout>

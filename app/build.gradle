@@ -1,0 +1,121 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
+
+    defaultConfig {
+        applicationId "com.sendtion.qingplayer"
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        vectorDrawables.useSupportLibrary = true
+    }
+
+    //签名配置
+    signingConfigs{
+        release {
+            storeFile file(rootProject.ext.signingConfig.storeFile)
+            storePassword rootProject.ext.signingConfig.storePassword
+            keyAlias rootProject.ext.signingConfig.keyAlias
+            keyPassword rootProject.ext.signingConfig.keyPassword
+        }
+        debug {
+            storeFile file(rootProject.ext.signingConfig.storeFile)
+            storePassword rootProject.ext.signingConfig.storePassword
+            keyAlias rootProject.ext.signingConfig.keyAlias
+            keyPassword rootProject.ext.signingConfig.keyPassword
+        }
+    }
+
+    buildTypes {
+        release {
+            //buildConfigField "String", "BMOB_APP_ID", "\"${BMOB_APP_ID}\""
+            buildConfigField "boolean", "LOG_DEBUG", "false" //不显示log
+            //resValue "String", "group_name_all", "${GROUP_NAME_ALL}"//可以直接在xml中引用资源文件
+            minifyEnabled true//混淆打包
+            zipAlignEnabled true //Zipalign优化
+            shrinkResources true//去掉不用资源
+            signingConfig signingConfigs.release //签名
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            //定义输入apk格式
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    def outputFile = output.outputFile
+                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                        // 输出apk名称为app_v1.0_2015-xx-xx_xxxx.apk
+                        //def fileName = "app_v${defaultConfig.versionName}_${releaseTime()}.apk"
+                        def fileName = "轻视频_v${defaultConfig.versionName}_${variant.productFlavors[0].name}.apk"
+                        //def fileName = "时光笔记_v${defaultConfig.versionName}.apk"
+                        output.outputFile = new File(outputFile.parent, fileName)
+                    }
+                }
+            }
+        }
+        debug {
+            //buildConfigField "String", "BMOB_APP_ID", "\"${BMOB_APP_ID}\""
+            buildConfigField "boolean", "LOG_DEBUG", "true"  //显示log
+            //resValue "String", "group_name_all", "${GROUP_NAME_ALL}"//可以直接在xml中引用资源文件
+            versionNameSuffix "-debug"  //版本号加上debug
+            minifyEnabled false
+            shrinkResources false
+            signingConfig signingConfigs.debug //签名
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    //这个是解决lint报错的代码
+    lintOptions{
+        abortOnError false
+        // 防止在发布的时候出现因MissingTranslation导致Build Failed!
+        disable 'MissingTranslation'
+    }
+
+    productFlavors {
+        bmob {}
+//        xiaomi {}
+//        baidu {}
+//        _91 {}
+//        anzhuo {}
+//        wandoujia {}
+//        anzhi {}
+//        yingyongbao {}
+//        mumayi {}
+//        youyi {}
+//        meizu {}
+//        ku_an {}
+
+//        _360 {}
+//        leyuan {}
+//        google {}
+//        lenovo {}
+//        oppo {}
+//        huawei {}
+//        yingyonghui {}
+    }
+
+    productFlavors.all {
+        flavor -> flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    testCompile rootProject.ext.deps.junit
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile rootProject.ext.deps.design
+    compile rootProject.ext.deps.supportV4
+    compile rootProject.ext.deps.supportV7
+
+    //compile files('libs/pldroid-player-1.5.1.jar')
+    //https://github.com/CarGuo/GSYVideoPlayer  api>=16
+    compile 'com.shuyu:GSYVideoPlayer:1.6.6'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+
+}
