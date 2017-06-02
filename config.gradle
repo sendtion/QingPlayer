@@ -1,9 +1,9 @@
 ext {
     signingConfig = [
-            storeFile    : "D:/Android/sendtion.keystore",
-            storePassword: "19890827",
-            keyAlias     : "sendtion",
-            keyPassword  : "19890827"
+            storeFile    : "D:/Android/",
+            storePassword: "",
+            keyAlias     : "",
+            keyPassword  : ""
     ]
 
     android = [
