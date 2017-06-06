@@ -65,7 +65,8 @@ public class VideoListAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) view.getTag();
         }
         MediaInfo videoInfo = videoInfoList.get(position);
-        Glide.with(parent.getContext()).load(videoInfo.getThumbnailPath()).into(viewHolder.iv_video_thumb);
+        Glide.with(parent.getContext()).load(videoInfo.getThumbnailPath())
+                .placeholder(R.drawable.video).into(viewHolder.iv_video_thumb);
         viewHolder.tv_video_name.setText(videoInfo.getName());
         viewHolder.tv_video_time.setText(generateTime(videoInfo.getDuration()));
 
