@@ -37,25 +37,24 @@
 -verbose
 # 混淆时所采用的算法
 -optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
--ignorewarnings
+#采用汉字混淆
+-obfuscationdictionary proguard_dic.txt
 #-ignorewarnings
 -keepattributes *Annotation*
 -keepattributes Signature
 -keepattributes SourceFile,LineNumberTable
 -keepattributes Exceptions,InnerClasses,Deprecated,LocalVariable*Table,Synthetic,EnclosingMethod
 -keepattributes EnclosingMethod
+#忽略警告
+-ignorewarnings
 
 # Keep native methods
 -keepclassmembers class * {
     native <methods>;
 }
-
-
 -keepclassmembers class fqcn.of.javascript.interface.for.webview {
    public *;
 }
-
-
 -keepclassmembers class * implements java.io.Serializable {
     static final long serialVersionUID;
     private static final java.io.ObjectStreamField[] serialPersistentFields;
@@ -64,26 +63,47 @@
     java.lang.Object writeReplace();
     java.lang.Object readResolve();
 }
-
 -keep public class * implements java.io.Serializable {
     public *;
 }
-
 -keep class **.R$*{
     *;
 }
-
 -keepclassmembers class * {
    public <init>(org.json.JSONObject);
 }
-
 -keepclasseswithmembernames class * {
 native <methods>;
 }
-
 -keepclassmembers enum * {
 public static **[] values();
 public static ** valueOf(java.lang.String);
+}
+
+# support-v4
+-dontwarn android.support.v4.**
+-keep class android.support.v4.** { *; }
+-keep interface android.support.v4.app.** { *; }
+-keep public class * extends android.support.v4.**
+-keep public class * extends android.app.Fragment
+# support-v7-appcompat
+-keep public class android.support.v7.widget.** { *; }
+-keep public class android.support.v7.internal.widget.** { *; }
+-keep public class android.support.v7.internal.view.menu.** { *; }
+-keep public class * extends android.support.v4.view.ActionProvider {
+    public <init>(android.content.Context);
+}
+# support-design
+-dontwarn android.support.design.**
+-keep class android.support.design.** { *; }
+-keep interface android.support.design.** { *; }
+-keep public class android.support.design.R$* { *; }
+
+# Glide
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
+    **[] $VALUES;
+    public *;
 }
 
 # GSYVideoPlayer
@@ -91,3 +111,15 @@ public static ** valueOf(java.lang.String);
 -dontwarn tv.danmaku.ijk.**
 -keep class com.shuyu.gsyvideoplayer.** { *; }
 -dontwarn com.shuyu.gsyvideoplayer.**
+
+# 友盟统计
+-keepclassmembers class * {
+   public <init> (org.json.JSONObject);
+}
+-keep public class com.sendtion.qingplayer.R$*{
+public static final int *;
+}
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}

@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.sendtion.qingplayer.R;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * 文件夹下视频列表
@@ -87,8 +88,8 @@ public class VideoActivity extends BaseActivity implements LoaderManager.LoaderC
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        //查询条件：指定文件夹下的视频
-        String selection = MediaStore.Video.Media.ALBUM+"=?";
+        //查询条件：指定文件夹下的视频，不能使用ALBUM查看，因为有的ALBUM为空，导致查询的视频不全
+        String selection = MediaStore.Video.Media.BUCKET_DISPLAY_NAME+"=?";
         String[] selectionArgs = {album};
         String orderBy = MediaStore.Video.Media.DATE_TAKEN;
         //创建loader
@@ -178,5 +179,19 @@ public class VideoActivity extends BaseActivity implements LoaderManager.LoaderC
             return cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.TITLE));
         }
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart(TAG);
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd(TAG);
+        MobclickAgent.onPause(this);
     }
 }

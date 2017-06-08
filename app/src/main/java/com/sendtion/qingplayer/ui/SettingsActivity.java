@@ -7,6 +7,7 @@ import android.widget.RelativeLayout;
 
 import com.sendtion.qingplayer.R;
 import com.shuyu.gsyvideoplayer.GSYVideoManager;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * 设置界面
@@ -44,6 +45,20 @@ public class SettingsActivity extends BaseActivity {
                 showToast("缓存清理完毕");
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart(TAG);
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd(TAG);
+        MobclickAgent.onPause(this);
     }
 
     @Override

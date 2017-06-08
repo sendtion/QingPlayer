@@ -1,10 +1,10 @@
 <resources>
-    <string name="app_name">轻视频</string>
+    <string name="app_name">ASPlayer</string>
 
     <string name="action_settings">设置</string>
     <string name="action_about">关于</string>
 
-    <string name="title_activity_main">轻视频</string>
+    <string name="title_activity_main">ASPlayer</string>
     <string name="title_activity_player">播放器</string>
     <string name="title_activity_video">视频列表</string>
 
@@ -45,7 +45,7 @@
     <string name="title_activity_settings">设置</string>
     <string name="title_activity_about">关于</string>
     <string name="large_text">
-        "轻视频，是一个简单轻便的视频播放器.\n\n"
+        "ASPlayer，是一个简单轻便的视频播放器.\n\n"
 
         "如果你很喜欢，请分享给大家！\n\n"
     </string>

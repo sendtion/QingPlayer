@@ -27,7 +27,7 @@ import android.widget.TextView;
 
 import com.sendtion.qingplayer.R;
 import com.sendtion.qingplayer.adapter.AlbumListAdapter;
-import com.sendtion.qingplayer.util.FileManager;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,6 +67,10 @@ public class MainActivity extends BaseActivity implements LoaderManager.LoaderCa
                         .setAction("Action", null).show();
             }
         });
+
+        /** 设置是否对日志信息进行加密, 默认false(不加密). */
+        MobclickAgent.enableEncrypt(true);//6.0.0版本及以后
+        MobclickAgent.setDebugMode( true );//打开调试模式
 
         mContext = this;
         //videoInfoList = new ArrayList<>();
@@ -148,8 +152,11 @@ public class MainActivity extends BaseActivity implements LoaderManager.LoaderCa
         //Android 检索相册视频文件 - 移动开发 - IT问道
         //http://www.itwendao.com/article/detail/145716.html
         if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()){
+            albumMap.clear();
+            albumList.clear();
             while (!cursor.isAfterLast()){
-                String album = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.ALBUM));
+                //不能使用ALBUM查看，应该使用BUCKET_DISPLAY_NAME，因为有的ALBUM为空，导致查询的视频不全
+                String album = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.BUCKET_DISPLAY_NAME));
                 if (album != null && album.length() > 0){
                     if (!albumMap.containsKey(album)){
                         albumMap.put(album, 1);
@@ -245,19 +252,6 @@ public class MainActivity extends BaseActivity implements LoaderManager.LoaderCa
             return cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.TITLE));
         }
 
-        public String getThumbImage(int position){
-            final Cursor cursor = getCursor();
-            if (cursor.getCount() == 0) {
-                return "";
-            }
-            cursor.moveToPosition(position);
-            String path = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DATA));
-            String mediaId = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media._ID));
-            // 缓存缩略图
-            Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(path,
-                    MediaStore.Images.Thumbnails.MICRO_KIND);
-            return FileManager.saveBitmap(mContext, bitmap, mediaId);
-        }
     }
 
     @Override
@@ -318,17 +312,21 @@ public class MainActivity extends BaseActivity implements LoaderManager.LoaderCa
     @Override
     protected void onResume() {
         super.onResume();
-//        mediaQueryTask = new MediaQueryTask(this);
-//        mediaQueryTask.setQueryListener(new MediaQueryTask.QueryListener() {
-//            @Override
-//            public void onResult(List<MediaInfo> mediaInfoList) {
-//                videoInfoList.clear();
-//                videoInfoList.addAll(mediaInfoList);
-//                Log.i(TAG, videoInfoList.toString());
-//                videoListAdapter.setVideoInfoList(videoInfoList);
-//                videoListAdapter.notifyDataSetChanged();
-//            }
-//        });
-//        mediaQueryTask.execute(mContext);
+        MobclickAgent.onPageStart(TAG);
+        MobclickAgent.onResume(this);
+        //getSupportLoaderManager().initLoader(1, null, this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd(TAG);
+        MobclickAgent.onPause(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
     }
 }

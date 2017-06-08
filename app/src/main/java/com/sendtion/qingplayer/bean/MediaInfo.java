@@ -12,7 +12,7 @@ public class MediaInfo {
     private String path;// DATA 路径
     private long size;// SIZE
     private String title;// TITLE 不带后缀的名字
-    private long time;// DATE_MODIFIED 最后修改时间
+    private long modifyTime;// DATE_MODIFIED 最后修改时间
 
     //DLNA用到的
     private String mediaID;
@@ -56,12 +56,12 @@ public class MediaInfo {
         this.title = title;
     }
 
-    public long getTime() {
-        return time;
+    public long getModifyTime() {
+        return modifyTime;
     }
 
-    public void setTime(long time) {
-        this.time = time;
+    public void setModifyTime(long modifyTime) {
+        this.modifyTime = modifyTime;
     }
 
     public String getMediaID() {
@@ -127,7 +127,7 @@ public class MediaInfo {
                 ", path='" + path + '\'' +
                 ", size=" + size +
                 ", title='" + title + '\'' +
-                ", time=" + time +
+                ", modifyTime=" + modifyTime +
                 ", mediaID='" + mediaID + '\'' +
                 ", mimeType='" + mimeType + '\'' +
                 ", duration=" + duration +

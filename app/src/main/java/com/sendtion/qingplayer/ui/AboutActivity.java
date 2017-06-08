@@ -7,11 +7,13 @@ import android.view.View;
 
 import com.sendtion.qingplayer.R;
 import com.sendtion.qingplayer.util.ShareUtils;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * 关于界面
  */
 public class AboutActivity extends BaseActivity {
+    private static final String TAG = "AboutActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,20 @@ public class AboutActivity extends BaseActivity {
                 ShareUtils.shareText(AboutActivity.this, content);
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart(TAG);
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd(TAG);
+        MobclickAgent.onPause(this);
     }
 
     @Override

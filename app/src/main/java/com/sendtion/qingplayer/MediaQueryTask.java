@@ -17,7 +17,6 @@ import android.provider.MediaStore;
 import android.util.Log;
 
 import com.sendtion.qingplayer.bean.MediaInfo;
-import com.sendtion.qingplayer.util.FileManager;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -113,7 +112,7 @@ public class MediaQueryTask extends AsyncTask<Context, Integer, List<MediaInfo>>
                     cursor.getColumnIndex(MediaStore.Video.Media.SIZE))));
             mediaInfo.setTitle(cursor.getString(
                     cursor.getColumnIndex(MediaStore.Video.Media.TITLE)));
-            mediaInfo.setTime(Integer.parseInt(cursor.getString(
+            mediaInfo.setModifyTime(Integer.parseInt(cursor.getString(
                     cursor.getColumnIndex(MediaStore.Video.Media.DATE_MODIFIED))));
 
             mediaInfo.setMediaID(cursor.getString(
@@ -132,8 +131,8 @@ public class MediaQueryTask extends AsyncTask<Context, Integer, List<MediaInfo>>
             // 缓存缩略图
             Bitmap bitmap = ThumbnailUtils.createVideoThumbnail(mediaInfo.getPath(),
                     MediaStore.Images.Thumbnails.MICRO_KIND);
-            String thumbnailPath = FileManager.saveBitmap(context, bitmap, mediaInfo.getMediaID());
-            mediaInfo.setThumbnailPath(thumbnailPath);
+            //String thumbnailPath = FileManager.saveBitmap(context, bitmap, mediaInfo.getMediaID());
+            //mediaInfo.setThumbnailPath(thumbnailPath);
 
             mediaInfoList.add(mediaInfo);
 
@@ -224,8 +223,8 @@ public class MediaQueryTask extends AsyncTask<Context, Integer, List<MediaInfo>>
                         mediaInfo.setMimeType(mimeType);
                         mediaInfo.setSize(size);
                         mediaInfo.setAlbum(album);
-                        String thumbnailPath = FileManager.saveBitmap(context, thumbnail, mediaInfo.getMediaID());
-                        mediaInfo.setThumbnailPath(thumbnailPath);
+                        //String thumbnailPath = FileManager.saveBitmap(context, thumbnail, mediaInfo.getMediaID());
+                        //mediaInfo.setThumbnailPath(thumbnailPath);
                         mediaInfoList.add(mediaInfo);
                     }
                 }

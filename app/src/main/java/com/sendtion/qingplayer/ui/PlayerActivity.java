@@ -15,6 +15,7 @@ import com.shuyu.gsyvideoplayer.utils.GSYVideoType;
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils;
 import com.shuyu.gsyvideoplayer.video.NormalGSYVideoPlayer;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * 视频播放界面
@@ -276,12 +277,18 @@ public class PlayerActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        MobclickAgent.onPageStart(TAG);
+        MobclickAgent.onResume(this);
+
         isPause = false;
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        MobclickAgent.onPageEnd(TAG);
+        MobclickAgent.onPause(this);
+
         isPause = true;
     }
 
