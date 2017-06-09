@@ -17,10 +17,34 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
+    <!-- 防止欢迎页白屏或者黑屏，设置图片 -->
+    <style name="SplashTheme" parent="AppBaseTheme">
+        <item name="android:windowBackground">@drawable/img_splash</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="windowNoTitle">true</item>
+        <!--<item name="android:windowBackground">@null</item>-->
+        <!--<item name="android:windowContentOverlay">@null</item>-->
+        <!--<item name="android:windowIsTranslucent">false</item>-->
+        <!--<item name="android:windowAnimationStyle">@null</item>-->
+        <!--<item name="android:windowDisablePreview">true</item>-->
+        <!--<item name="android:windowNoDisplay">false</item>-->
+    </style>
+
     <!--这个样式，就是隐藏标题栏和状态栏-->
     <style name="AppTheme.FullScreen">
         <item name="windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <!--对话框主题-->
+    <style name="AppDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <!-- 去除标题栏 -->
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowCloseOnTouchOutside">false</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:backgroundDimEnabled">true</item>
     </style>
 
 </resources>

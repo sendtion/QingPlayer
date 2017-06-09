@@ -2,12 +2,14 @@ package com.sendtion.qingplayer.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 
 import com.sendtion.qingplayer.R;
+import com.sendtion.qingplayer.util.ConstantUtils;
 import com.shuyu.gsyvideoplayer.GSYVideoPlayer;
 import com.shuyu.gsyvideoplayer.listener.LockClickListener;
 import com.shuyu.gsyvideoplayer.listener.StandardVideoAllCallBack;
@@ -23,11 +25,14 @@ import com.umeng.analytics.MobclickAgent;
 public class PlayerActivity extends BaseActivity {
     private static final String TAG = "PlayerActivity";
     private Context mContext;
+    private SharedPreferences sp;
 
     private NormalGSYVideoPlayer gsyVideoPlayer;
     private String mVideoPath = "rtmp://live.hkstv.hk.lxdns.com/live/hks";
     private String mVideoTitle = "";
 
+    private String playMode;//播放模式
+    private boolean isEnableCodec;//是否开启硬解码
     private boolean isPlay;
     private boolean isPause;
 
@@ -46,6 +51,9 @@ public class PlayerActivity extends BaseActivity {
 
     private void initViews() {
         mContext = this;
+        sp = getSharedPreferences("userInfo", MODE_PRIVATE);
+        isEnableCodec = sp.getBoolean("isEnableCodec", false);
+        playMode = sp.getString("playMode", ConstantUtils.PLAY_ORDER);
 
         Intent intent = getIntent();
         mVideoPath = intent.getStringExtra("videoPath");
@@ -85,15 +93,19 @@ public class PlayerActivity extends BaseActivity {
         //gsyVideoPlayer.setPlayPosition(position);
 
         //循环播放
-        gsyVideoPlayer.setLooping(true);
+        if (playMode.equals(ConstantUtils.PLAY_LOOP)){
+            gsyVideoPlayer.setLooping(true);
+        }
 
         //如果一个列表的所有视频缓存路劲都一一致，那么配置自定义路径的方法
         //gsyVideoPlayer.setUp(mVideoPath, true, new File(FileUtils.getTestPath(), ""));
 
         //开启硬解码-额··反正我自己用不开
-        //GSYVideoType.enableMediaCodec() ;
-        //默认不开启硬解码
-        GSYVideoType.disableMediaCodec();
+        if (isEnableCodec){
+            GSYVideoType.enableMediaCodec() ;
+        } else {//默认不开启硬解码
+            GSYVideoType.disableMediaCodec();
+        }
 
         //设置显示比例，默认SCREEN_TYPE_DEFAULT ，自适应
         //GSYVideoType.setShowType(GSYVideoType.SCREEN_TYPE_16_9);

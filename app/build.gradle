@@ -13,10 +13,16 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         vectorDrawables.useSupportLibrary = true
+
+        ndk {
+            // 设置支持的 SO 库构架，自动向前兼容，保留armeabi即可
+            //对应cpu架构：ARMv5，ARMv7，x86，MIPS，ARMv8，MIPS64，x86_64
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'//, 'x86', 'x86_64', 'mips', 'mips64'
+        }
     }
 
     //签名配置
-    signingConfigs{
+    signingConfigs {
         release {
             storeFile file(rootProject.ext.signingConfig.storeFile)
             storePassword rootProject.ext.signingConfig.storePassword
@@ -33,7 +39,7 @@ android {
 
     buildTypes {
         release {
-            //buildConfigField "String", "BMOB_APP_ID", "\"${BMOB_APP_ID}\""
+            buildConfigField "String", "BMOB_APP_ID", "\"${BMOB_APP_ID}\""
             buildConfigField "boolean", "LOG_DEBUG", "false" //不显示log
             //resValue "String", "group_name_all", "${GROUP_NAME_ALL}"//可以直接在xml中引用资源文件
             minifyEnabled true//混淆打包
@@ -48,7 +54,7 @@ android {
                     if (outputFile != null && outputFile.name.endsWith('.apk')) {
                         // 输出apk名称为app_v1.0_2015-xx-xx_xxxx.apk
                         //def fileName = "app_v${defaultConfig.versionName}_${releaseTime()}.apk"
-                        def fileName = "轻视频_v${defaultConfig.versionName}_${variant.productFlavors[0].name}.apk"
+                        def fileName = "ASPlayer_v${defaultConfig.versionName}_${variant.productFlavors[0].name}.apk"
                         //def fileName = "时光笔记_v${defaultConfig.versionName}.apk"
                         output.outputFile = new File(outputFile.parent, fileName)
                     }
@@ -56,7 +62,7 @@ android {
             }
         }
         debug {
-            //buildConfigField "String", "BMOB_APP_ID", "\"${BMOB_APP_ID}\""
+            buildConfigField "String", "BMOB_APP_ID", "\"${BMOB_APP_ID}\""
             buildConfigField "boolean", "LOG_DEBUG", "true"  //显示log
             //resValue "String", "group_name_all", "${GROUP_NAME_ALL}"//可以直接在xml中引用资源文件
             versionNameSuffix "-debug"  //版本号加上debug
@@ -68,7 +74,7 @@ android {
     }
 
     //这个是解决lint报错的代码
-    lintOptions{
+    lintOptions {
         abortOnError false
         // 防止在发布的时候出现因MissingTranslation导致Build Failed!
         disable 'MissingTranslation'
@@ -108,15 +114,30 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testCompile rootProject.ext.deps.junit
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile rootProject.ext.deps.cardviewV7
     compile rootProject.ext.deps.design
     compile rootProject.ext.deps.supportV4
     compile rootProject.ext.deps.supportV7
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+
+
+    //自定义Toast  https://github.com/GrenderG/Toasty
+    //compile 'com.github.GrenderG:Toasty:1.2.5'
+    compile('com.github.GrenderG:Toasty:1.2.5', {
+        exclude group: 'com.android.support'
+    })
 
     //compile files('libs/pldroid-player-1.5.1.jar')
     //https://github.com/CarGuo/GSYVideoPlayer  api>=16
     compile 'com.shuyu:GSYVideoPlayer:1.6.6'
+    //图片加载
     compile 'com.github.bumptech.glide:glide:3.7.0'
+    //友盟统计
     compile 'com.umeng.analytics:analytics:latest.integration'
-
+    //Bmob后端云sdk包
+    compile 'cn.bmob.android:bmob-sdk:3.5.5'
+    //如果你想应用能够兼容Android6.0，请添加此依赖(org.apache.http.legacy.jar)
+    compile 'cn.bmob.android:http-legacy:1.0'
+    //Handler弱引用
+    compile 'com.badoo.mobile:android-weak-handler:1.1'
 }

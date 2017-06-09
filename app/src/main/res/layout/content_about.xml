@@ -9,12 +9,125 @@
     tools:context="com.sendtion.qingplayer.ui.AboutActivity"
     tools:showIn="@layout/activity_about">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:padding="@dimen/text_margin"
-        android:text="@string/large_text"
-        android:textSize="18sp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/activity_margin_5"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/card_view_about_app"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/grey_050"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="2dp"
+            app:cardPreventCornerOverlap="true"
+            app:cardUseCompatPadding="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:padding="@dimen/text_margin"
+                android:text="@string/large_text"
+                android:textSize="18sp"/>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/card_view_about_update"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/grey_000"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="2dp"
+            app:cardPreventCornerOverlap="true"
+            app:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/layout_about_update"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:padding="@dimen/activity_margin_16"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/tv_update_tips"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="检查更新"
+                        android:textColor="@color/grey_700"
+                        android:textSize="@dimen/text_size_14"/>
+
+                    <TextView
+                        android:id="@+id/tv_about_version"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="v1.0.1"
+                        android:textColor="@color/grey_500"
+                        android:textSize="@dimen/text_size_14"/>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="@dimen/activity_margin_16"
+                    android:layout_marginRight="@dimen/activity_margin_16"
+                    android:background="@color/grey_300" />
+
+                <RelativeLayout
+                    android:id="@+id/layout_about_rating"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:padding="@dimen/activity_margin_16"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/tv_about_rating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="给个好评"
+                        android:textSize="@dimen/text_size_14"/>
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="@dimen/activity_margin_16"
+                    android:layout_marginRight="@dimen/activity_margin_16"
+                    android:background="@color/grey_300" />
+
+                <RelativeLayout
+                    android:id="@+id/layout_about_feedback"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:padding="@dimen/activity_margin_16"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/tv_about_feedback"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="在线反馈"
+                        android:textSize="@dimen/text_size_14"/>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>

@@ -1,28 +1,278 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.sendtion.qingplayer.ui.SettingsActivity"
-    tools:showIn="@layout/activity_settings">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:context="com.sendtion.qingplayer.ui.SettingsActivity"
+            tools:showIn="@layout/activity_settings">
 
-    <RelativeLayout
-        android:id="@+id/layout_setting_clear_cache"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackground"
-        android:padding="16dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/activity_margin_5">
 
-        <TextView
+        <android.support.v7.widget.CardView
+            android:id="@+id/card_view_setting_common"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="清除缓存"
-            android:textSize="16sp"
-            android:textColor="#555555"/>
-    </RelativeLayout>
+            android:background="@color/grey_000"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="2dp"
+            app:cardPreventCornerOverlap="true"
+            app:cardUseCompatPadding="true">
 
-</LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/layout_setting_play_mode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/activity_margin_16"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="播放模式"
+                        android:textColor="@color/grey_700"
+                        android:textSize="@dimen/text_size_14"/>
+
+                    <TextView
+                        android:id="@+id/tv_play_mode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="循环播放"
+                        android:textColor="@color/grey_500"
+                        android:textSize="@dimen/text_size_12"/>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="@dimen/activity_margin_16"
+                    android:layout_marginRight="@dimen/activity_margin_16"
+                    android:background="@color/grey_300"
+                    android:visibility="gone"/>
+
+                <RelativeLayout
+                    android:id="@+id/layout_setting_media_codec"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/activity_margin_16">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="开启硬解码"
+                        android:textColor="#555555"
+                        android:textSize="@dimen/text_size_14"/>
+
+                    <android.support.v7.widget.SwitchCompat
+                        android:id="@+id/switch_media_codec"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="center_vertical"
+                        android:clickable="false"
+                        android:text=""/>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="@dimen/activity_margin_16"
+                    android:layout_marginRight="@dimen/activity_margin_16"
+                    android:background="@color/grey_300"/>
+
+                <RelativeLayout
+                    android:id="@+id/layout_setting_clear_cache"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/activity_margin_16">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="清除缓存"
+                        android:textColor="#555555"
+                        android:textSize="@dimen/text_size_14"/>
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/grey_000"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="2dp"
+            app:cardPreventCornerOverlap="true"
+            app:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/layout_setting_donate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/activity_margin_16">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="打赏作者"
+                        android:textColor="@color/grey_700"
+                        android:textSize="@dimen/text_size_14"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="请备注名字和来源App"
+                        android:textColor="@color/grey_500"
+                        android:textSize="@dimen/text_size_12"/>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="@dimen/activity_margin_16"
+                    android:layout_marginRight="@dimen/activity_margin_16"
+                    android:background="@color/grey_300"/>
+
+                <RelativeLayout
+                    android:id="@+id/layout_setting_rating"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/activity_margin_16">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="给个好评"
+                        android:textSize="@dimen/text_size_14"/>
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/grey_000"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="2dp"
+            app:cardPreventCornerOverlap="true"
+            app:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/layout_setting_check_update"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/activity_margin_16">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="检查更新"
+                        android:textColor="@color/grey_700"
+                        android:textSize="@dimen/text_size_14"/>
+
+                    <TextView
+                        android:id="@+id/tv_version_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="v1.0.1"
+                        android:textColor="@color/grey_500"
+                        android:textSize="@dimen/text_size_12"/>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="@dimen/activity_margin_16"
+                    android:layout_marginRight="@dimen/activity_margin_16"
+                    android:background="@color/grey_300"/>
+
+                <RelativeLayout
+                    android:id="@+id/layout_setting_app_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/activity_margin_16">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:text="应用信息"
+                        android:textColor="#787878"
+                        android:textSize="@dimen/text_size_14"/>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="@dimen/activity_margin_16"
+                    android:layout_marginRight="@dimen/activity_margin_16"
+                    android:background="@color/grey_300"/>
+
+                <RelativeLayout
+                    android:id="@+id/layout_setting_about"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/activity_margin_16">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:text="关于"
+                        android:textColor="#787878"
+                        android:textSize="@dimen/text_size_14"/>
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+</ScrollView>

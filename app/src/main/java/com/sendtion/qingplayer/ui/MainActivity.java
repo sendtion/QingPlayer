@@ -2,10 +2,14 @@ package com.sendtion.qingplayer.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.media.ThumbnailUtils;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
@@ -16,6 +20,7 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.widget.Toolbar;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,8 +30,13 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.sendtion.qingplayer.BuildConfig;
+import com.sendtion.qingplayer.MyApplication;
 import com.sendtion.qingplayer.R;
 import com.sendtion.qingplayer.adapter.AlbumListAdapter;
+import com.sendtion.qingplayer.bean.UserData;
+import com.sendtion.qingplayer.util.CommonUtil;
+import com.sendtion.qingplayer.util.NetworkUtil;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
@@ -34,9 +44,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.bmob.v3.Bmob;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.update.BmobUpdateAgent;
+
 public class MainActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = "MainActivity";
     private Context mContext;
+    private MyApplication app;
+    private SharedPreferences sp;//存储上次查询信息
+    private PackageInfo packageInfo;
+    private TelephonyManager tm;
 
     //private MediaQueryTask mediaQueryTask;
     //private List<MediaInfo> videoInfoList;
@@ -72,6 +91,25 @@ public class MainActivity extends BaseActivity implements LoaderManager.LoaderCa
         MobclickAgent.enableEncrypt(true);//6.0.0版本及以后
         MobclickAgent.setDebugMode( true );//打开调试模式
 
+        /** 初始化BmobSDK，传入渠道号，可以使用Bmob统计 */
+        Bmob.initialize(getApplicationContext(), BuildConfig.BMOB_APP_ID,
+                CommonUtil.getAppMetaData(this, "UMENG_CHANNEL"));
+        //初始化AppVersion表
+        //BmobUpdateAgent.initAppVersion();
+        //关闭只有wifi才更新
+        BmobUpdateAgent.setUpdateOnlyWifi(false);
+        BmobUpdateAgent.update(this);//检测更新
+        //BmobUpdateAgent.silentUpdate(this);//静默更新
+
+        app = (MyApplication)getApplication();
+        sp = getSharedPreferences("userInfo", MODE_PRIVATE);
+        tm = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+        try {
+            packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
         mContext = this;
         //videoInfoList = new ArrayList<>();
         albumMap = new HashMap<>();
@@ -101,6 +139,41 @@ public class MainActivity extends BaseActivity implements LoaderManager.LoaderCa
 
         getSupportLoaderManager().initLoader(1, null, this);
 
+        saveDeviceInfo();//统计用户设备
+    }
+
+    /**
+     * 保存设备信息，只记录一次
+     */
+    private void saveDeviceInfo() {
+        boolean isRecord = sp.getBoolean("isRecord", false);
+        if (!isRecord) {//记录一次
+            //保存信息
+            UserData userData = new UserData();
+            userData.setDeviceModel(Build.MODEL);//设备型号
+            userData.setDeviceId(tm.getDeviceId());//设备ID
+            userData.setDeviceBrand(Build.BRAND);//生产商
+            userData.setNetworkType(NetworkUtil.getNetworkType(this));//网络类型
+            userData.setMacAddress(NetworkUtil.getLocalMacAddress(this));//MAC地址
+            userData.setChannelValue(CommonUtil.getAppMetaData(this,"UMENG_CHANNEL"));//市场渠道
+            //userData.setPhoneNumber(tm.getLine1Number());//电话号码
+            userData.setAndroidVersion(Build.VERSION.RELEASE);//安卓版本
+            userData.setVersionName(packageInfo.versionName);//APP版本名
+            userData.setVersionCode(packageInfo.versionCode);//APP版本号
+            userData.save(new SaveListener<String>() {
+
+                @Override
+                public void done(String objectId, BmobException e) {
+                    if (e == null){
+                        //Toast.makeText(MainActivity.this, "保存成功！", Toast.LENGTH_LONG).show();
+                        sp.edit().putBoolean("isRecord", true).commit();
+                    } else {
+                        //Toast.makeText(MainActivity.this, "保存失败！", Toast.LENGTH_LONG).show();
+                        //sp.edit().putBoolean("isSave", false).commit();
+                    }
+                }
+            });
+        }
     }
 
     //显示媒体详细信息

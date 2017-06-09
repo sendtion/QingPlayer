@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import es.dmoral.toasty.Toasty;
+
 public class BaseActivity extends AppCompatActivity {
     private static final String TAG = "BaseActivity";
 
@@ -21,7 +23,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void showToast(String text){
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+        Toasty.normal(this, text, Toast.LENGTH_SHORT).show();
     }
 
     @Override

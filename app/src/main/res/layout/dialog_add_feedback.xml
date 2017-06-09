@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/activity_margin_16" >
+
+    <TextView
+        android:id="@+id/tv_device_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"
+        android:padding="5dp"
+        android:textSize="@dimen/text_size_20" />
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <EditText
+            android:id="@+id/et_user_contact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="输入QQ/邮箱等联系方式"
+            android:inputType="textEmailAddress"
+            android:maxLines="1" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <EditText
+        android:id="@+id/et_user_feedback"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/feedback_bg"
+        android:gravity="top|left"
+        android:hint="输入反馈内容"
+        android:textSize="@dimen/text_size_14"
+        android:padding="10dp" />
+
+</LinearLayout>
