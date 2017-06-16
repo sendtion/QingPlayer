@@ -9,4 +9,9 @@
         <attr name="metaButtonBarButtonStyle" format="reference"/>
     </declare-styleable>
 
+    <declare-styleable name="BatteryViewAttrs">
+        <attr name="batteryColor" format="color" />
+        <attr name="textColor" format="color" />
+    </declare-styleable>
+
 </resources>

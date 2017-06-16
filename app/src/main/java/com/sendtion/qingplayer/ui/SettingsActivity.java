@@ -21,7 +21,7 @@ import com.sendtion.qingplayer.util.AppUtils;
 import com.sendtion.qingplayer.util.CommonUtil;
 import com.sendtion.qingplayer.util.ConstantUtils;
 import com.sendtion.qingplayer.util.MarketUtils;
-import com.shuyu.gsyvideoplayer.GSYVideoManager;
+import com.sendtion.qingplayer.util.Utility;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.List;
@@ -133,7 +133,8 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
                 break;
             case R.id.layout_setting_clear_cache:
                 //清理缓存
-                GSYVideoManager.clearAllDefaultCache(mContext);
+                //GSYVideoManager.clearAllDefaultCache(mContext);
+                Utility.delAppCache(mContext);
                 showToast("缓存清理完毕");
                 break;
             case R.id.layout_setting_check_update:

@@ -4,7 +4,7 @@
     <string name="action_settings">设置</string>
     <string name="action_about">关于</string>
 
-    <string name="title_activity_main">ASPlayer</string>
+    <string name="title_activity_main">文件夹</string>
     <string name="title_activity_player">播放器</string>
     <string name="title_activity_video">视频列表</string>
 
@@ -41,6 +41,11 @@
     <string name="btn_pause">暂停</string>
     <string name="btn_resume">继续</string>
     <string name="btn_stop">停止</string>
+
+    <string name="save_video_shot_tips">截图已保存：</string>
+    <string name="save_video_shot_error">截图失败！</string>
+    <string name="play_url_error">播放地址有误，无法播放！</string>
+    <string name="play_error">播放出错啦！</string>
 
     <string name="title_activity_settings">设置</string>
     <string name="title_activity_about">关于</string>
