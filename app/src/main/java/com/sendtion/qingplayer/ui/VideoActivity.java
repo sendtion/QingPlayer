@@ -56,7 +56,7 @@ public class VideoActivity extends BaseActivity implements LoaderManager.LoaderC
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mContext, PlayerActivity.class);
+                Intent intent = new Intent(mContext, Player2Activity.class);
                 intent.putExtra("videoPath", mVideoAdapter.getVideoPath(0));
                 intent.putExtra("videoTitle", mVideoAdapter.getVideoTitle(0));
                 startActivity(intent);
@@ -76,7 +76,7 @@ public class VideoActivity extends BaseActivity implements LoaderManager.LoaderC
         mVideoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, final long id) {
-                Intent intent = new Intent(mContext, PlayerActivity.class);
+                Intent intent = new Intent(mContext, Player2Activity.class);
                 intent.putExtra("videoPath", mVideoAdapter.getVideoPath(position));
                 intent.putExtra("videoTitle", mVideoAdapter.getVideoTitle(position));
                 startActivity(intent);
