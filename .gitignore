@@ -7,3 +7,6 @@
 /build
 /captures
 .externalNativeBuild
+gradle.properties
+.idea/encodings.xml
+.idea/vcs.xml

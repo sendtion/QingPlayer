@@ -22,8 +22,8 @@ public class MyApplication extends Application {
 
     private SharedPreferences mSharedPreferences;
 
-    public static String videoShotDirPath;
-    public static String videoCacheDirPath;
+    public static String videoShotDirPath;//视频截屏目录
+    public static String videoCacheDirPath;//视频缓存目录
 
     @Override
     public void onCreate() {

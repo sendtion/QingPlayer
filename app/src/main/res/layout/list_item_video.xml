@@ -4,19 +4,39 @@
                 android:layout_height="match_parent"
                 android:padding="10dp">
 
-    <ImageView
-        android:id="@+id/iv_video_thumb"
+    <RelativeLayout
+        android:id="@+id/layout_video_thumb"
         android:layout_width="80dp"
-        android:layout_height="65dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/video"/>
+        android:layout_height="65dp">
+
+        <ImageView
+            android:id="@+id/iv_video_thumb"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/video"/>
+
+        <TextView
+            android:id="@+id/tv_video_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:background="@color/grey_500"
+            android:text="03:45"
+            android:textSize="10sp"
+            android:textColor="@color/grey_300"/>
+
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="65dp"
         android:layout_marginLeft="10dp"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/iv_video_thumb">
+        android:layout_toRightOf="@+id/layout_video_thumb">
 
         <TextView
             android:id="@+id/tv_video_name"
@@ -28,7 +48,7 @@
             android:textColor="#161616"/>
 
         <TextView
-            android:id="@+id/tv_video_time"
+            android:id="@+id/tv_video_size"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

@@ -7,12 +7,14 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -35,6 +37,9 @@ import io.vov.vitamio.utils.StringUtils;
 import io.vov.vitamio.widget.CenterLayout;
 import io.vov.vitamio.widget.VideoView;
 
+/**
+ * Vitamio播放器界面
+ */
 public class Player2Activity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = "Player2Activity";
     private Context mContext;
@@ -70,6 +75,8 @@ public class Player2Activity extends BaseActivity implements View.OnClickListene
     private boolean isPlayError = false;// 是否播放出错
     private long currentPosition = 0;// 播放位置
     private int currentVideoLayout = VideoView.VIDEO_LAYOUT_SCALE;
+    private boolean isLandScape;//是否横屏
+    private String resolution;//分辨率
 
     private final int SAVE_BITMAP = 1;// 保存截图
     private Handler mHandler = new Handler(new Handler.Callback() {
@@ -101,7 +108,19 @@ public class Player2Activity extends BaseActivity implements View.OnClickListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player2);
 
+        //全屏，没有标题栏，没有状态栏
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            View decorView = getWindow().getDecorView();
+            decorView.setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        }
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
         mContext = this;
+        Vitamio.isInitialized(mContext);
 
         initPlayerUrl();
 
@@ -114,12 +133,14 @@ public class Player2Activity extends BaseActivity implements View.OnClickListene
         initOther();
 
 //        initDLNA();
+
     }
 
     @Override
     protected void onResume() {
 //        mDlnaSearch.resumeSearch();
         super.onResume();
+
     }
 
     @Override
@@ -192,6 +213,16 @@ public class Player2Activity extends BaseActivity implements View.OnClickListene
         } else {
             String url = intent.getStringExtra("videoPath");
             name = intent.getStringExtra("videoTitle");
+//            boolean landscape = intent.getBooleanExtra("landscape", false);//isLandScape
+//            String[] resolut = resolution.split("x");
+//            if (Integer.parseInt(resolut[0]) > Integer.parseInt(resolut[1])){
+//                isLandScape = true;
+//                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+//            }
+//            String[] resolut = resolution.split("x");
+//            if(landscape && getRequestedOrientation()!=ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE){
+//                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+//            }
 
             //name = intent.getStringExtra(ConstantKey.NAME);
             //String url = intent.getStringExtra(ConstantKey.PLAY_URL);
@@ -228,12 +259,13 @@ public class Player2Activity extends BaseActivity implements View.OnClickListene
      * 初始化VideoView
      */
     private void initVideoView() {
-        Vitamio.isInitialized(mContext);
+        //Vitamio.isInitialized(mContext);
         mVideoView.setMediaBufferingIndicator(mLoadingView);
         mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
 
             @Override
             public void onPrepared(MediaPlayer mp) {
+                //showToast("setOnPreparedListener");
                 mVideoShot.setEnabled(true);
                 mLoadingView.setVisibility(View.GONE);
                 mHandler.postDelayed(hiddenViewThread, HIDE_INTERVAL);
@@ -250,6 +282,7 @@ public class Player2Activity extends BaseActivity implements View.OnClickListene
 
             @Override
             public void onCompletion(MediaPlayer mp) {
+                //showToast("setOnCompletionListener");
                 isPlayComplete = true;
                 onPlaySRCChange(false);
                 mLoadingView.setVisibility(View.GONE);
@@ -272,6 +305,7 @@ public class Player2Activity extends BaseActivity implements View.OnClickListene
         mVideoView.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
             @Override
             public void onBufferingUpdate(MediaPlayer mp, int percent) {
+                //showToast("setOnBufferingUpdateListener");
                 if (percent > 0 && percent < 100) {
                     mLoadingInfo.setText(percent + "%");
                 } else {
@@ -282,6 +316,7 @@ public class Player2Activity extends BaseActivity implements View.OnClickListene
         mVideoView.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
             @Override
             public void onSeekComplete(MediaPlayer mp) {
+                //showToast("onSeekComplete");
                 onVideoPlay();
             }
         });
@@ -365,6 +400,7 @@ public class Player2Activity extends BaseActivity implements View.OnClickListene
         if (playUri == null) {
             showToast(getString(R.string.play_url_error));
         } else {
+            //showToast("开始播放"+playUri.getPath());
             mVideoView.setVideoURI(playUri);
             mLoadingView.setVisibility(View.VISIBLE);
         }
@@ -469,9 +505,9 @@ public class Player2Activity extends BaseActivity implements View.OnClickListene
      */
     private void onPlaySRCChange(boolean isPlaying) {
         if (isPlaying) {
-            mVideoPlayPause.setImageResource(R.drawable.play_pause_icon);
+            mVideoPlayPause.setImageResource(R.drawable.ic_pause_white_24dp);
         } else {
-            mVideoPlayPause.setImageResource(R.drawable.play_start_icon);
+            mVideoPlayPause.setImageResource(R.drawable.ic_play_arrow_white_24dp);
         }
     }
 
@@ -543,11 +579,22 @@ public class Player2Activity extends BaseActivity implements View.OnClickListene
             case R.id.orientation_change:
                 if (getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                    isLandScape = false;
+                    mOrientationChange.setImageResource(R.drawable.ic_fullscreen_white_24dp);
                 } else {
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                    isLandScape = true;
+                    mOrientationChange.setImageResource(R.drawable.ic_fullscreen_exit_white_24dp);
                 }
                 break;
             case R.id.player_back:
+//                if (isLandScape){
+//                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+//                    isLandScape = false;
+//                    mOrientationChange.setImageResource(R.drawable.ic_fullscreen_white_24dp);
+//                } else {
+//                    finish();
+//                }
                 finish();
                 break;
 //            case R.id.dlna_devices:
@@ -589,36 +636,37 @@ public class Player2Activity extends BaseActivity implements View.OnClickListene
     private float lastX = 0;
     private float lastY = 0;
 
+    //双指缩放视频大小
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         int pointerCount = event.getPointerCount();
         int action = event.getAction();
 
         if (pointerCount == 2) {
-            if ((action & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_POINTER_DOWN) {
-                lastX = event.getX(0) - event.getX(1);
-                lastY = event.getY(0) - event.getY(1);
-                lastDistance = Math.sqrt(lastX * lastX + lastY * lastY);
-
-            } else if ((action & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_POINTER_UP) {
-                // 抬手，重置
-                lastX = 0;
-                lastY = 0;
-                lastDistance = 0;
-
-            } else if (action == MotionEvent.ACTION_MOVE) {
-                lastX = event.getX(0) - event.getX(1);
-                lastY = event.getY(0) - event.getY(1);
-                double moveDistance = Math.sqrt(lastX * lastX + lastY * lastY);
-
-                int difference = (int) (moveDistance - lastDistance);
-                float changeScale = difference / 100f;
-                //mVideoView.scaleVideo(changeScale);
-                mVideoView.setScaleX(changeScale);
-                mVideoView.setScaleY(changeScale);
-                lastDistance = moveDistance;
-
-            }
+//            if ((action & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_POINTER_DOWN) {
+//                lastX = event.getX(0) - event.getX(1);
+//                lastY = event.getY(0) - event.getY(1);
+//                lastDistance = Math.sqrt(lastX * lastX + lastY * lastY);
+//
+//            } else if ((action & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_POINTER_UP) {
+//                // 抬手，重置
+//                lastX = 0;
+//                lastY = 0;
+//                lastDistance = 0;
+//
+//            } else if (action == MotionEvent.ACTION_MOVE) {
+//                lastX = event.getX(0) - event.getX(1);
+//                lastY = event.getY(0) - event.getY(1);
+//                double moveDistance = Math.sqrt(lastX * lastX + lastY * lastY);
+//
+//                int difference = (int) (moveDistance - lastDistance);
+//                float changeScale = difference / 100f;
+//                //mVideoView.scaleVideo(changeScale);
+//                mVideoView.setScaleX(changeScale);
+//                mVideoView.setScaleY(changeScale);
+//                lastDistance = moveDistance;
+//
+//            }
 
             return super.onTouchEvent(event);
 
@@ -654,11 +702,26 @@ public class Player2Activity extends BaseActivity implements View.OnClickListene
             getWindow().setAttributes(params);
             getWindow().clearFlags(
                     WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-            mDigitalClock.setVisibility(View.GONE);
-            mBatteryView.setVisibility(View.GONE);
+            mDigitalClock.setVisibility(View.VISIBLE);
+            mBatteryView.setVisibility(View.VISIBLE);
         }
         // 每次切换屏幕方向完成，需要重新计算VideoView宽高，故重新设置VideoLayout
         mVideoView.setVideoLayout(VideoView.VIDEO_LAYOUT_SCALE, 0);
         mPlayerGesture.setScreenWidth(this);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK){
+//            if (isLandScape){
+//                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+//                isLandScape = false;
+//                mOrientationChange.setImageResource(R.drawable.ic_fullscreen_white_24dp);
+//            } else {
+//                finish();
+//            }
+            finish();
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

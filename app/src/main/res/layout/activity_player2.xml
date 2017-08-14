@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/player_root"
                 android:layout_width="match_parent"
@@ -53,10 +54,10 @@
 
     <ImageView
         android:id="@+id/player_center_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_centerInParent="true"
-        android:src="@drawable/play_big_icon"
+        app:srcCompat="@drawable/ic_play_circle_outline_white_24dp"
         android:visibility="gone"/>
 
     <RelativeLayout
@@ -75,7 +76,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:padding="3dp"
-            android:src="@drawable/play_start_icon"/>
+            app:srcCompat="@drawable/ic_play_arrow_white_24dp"/>
 
         <TextView
             android:id="@+id/player_current_time"
@@ -90,12 +91,11 @@
 
         <ImageView
             android:id="@+id/orientation_change"
-            android:layout_width="22dp"
-            android:layout_height="22dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:padding="3dp"
-            android:src="@drawable/web_refresh_icon"/>
+            app:srcCompat="@drawable/ic_fullscreen_white_24dp"/>
 
         <ImageView
             android:id="@+id/video_shot"
@@ -104,6 +104,7 @@
             android:layout_centerVertical="true"
             android:padding="3dp"
             android:layout_marginRight="15dp"
+            android:visibility="gone"
             android:layout_toLeftOf="@id/orientation_change"
             android:src="@drawable/video_shot_icon"/>
 
@@ -145,20 +146,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:padding="5dp"
-            android:src="@drawable/back_icon"/>
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            app:srcCompat="@drawable/ic_arrow_back_white_24dp"/>
 
         <TextView
             android:id="@+id/player_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/player_back"
+            android:layout_toLeftOf="@+id/layout_top_right"
             android:maxLines="1"
             android:textColor="@color/grey_000"
             android:textSize="15sp"
             android:textStyle="bold"/>
 
         <LinearLayout
+            android:id="@+id/layout_top_right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -171,6 +178,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="15dp"
+                android:visibility="gone"
                 android:src="@drawable/dlna_icon"/>
 
             <DigitalClock

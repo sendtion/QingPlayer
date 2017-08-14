@@ -63,6 +63,7 @@
             android:name=".ui.Player2Activity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop"
+            android:screenOrientation="landscape"
             android:label="@string/title_activity_player"
             android:theme="@style/AppTheme.FullScreen">
             <intent-filter>

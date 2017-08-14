@@ -59,20 +59,31 @@ public class VideoListAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
             viewHolder.iv_video_thumb = (ImageView) view.findViewById(R.id.iv_video_thumb);
             viewHolder.tv_video_name = (TextView) view.findViewById(R.id.tv_video_name);
+            viewHolder.tv_video_size = (TextView) view.findViewById(R.id.tv_video_size);
             viewHolder.tv_video_time = (TextView) view.findViewById(R.id.tv_video_time);
             view.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
         MediaInfo videoInfo = videoInfoList.get(position);
-        Glide.with(parent.getContext()).load(videoInfo.getThumbnailPath())
+        //显示视频缩略图
+        Glide.with(parent.getContext()).load(videoInfo.getThumbPath())
                 .placeholder(R.drawable.video).into(viewHolder.iv_video_thumb);
+        //显示视频名字
         viewHolder.tv_video_name.setText(videoInfo.getName());
+        String resolution = videoInfo.getResolution();
+        if (resolution == null){
+            resolution = "未知";
+        }
+        //显示分辨率和大小
+        viewHolder.tv_video_size.setText(resolution + "  " + videoInfo.getSize()/1024/1024+" M");
+        //显示视频时长
         viewHolder.tv_video_time.setText(generateTime(videoInfo.getDuration()));
 
         return view;
     }
 
+    //格式化视频时长的显示
     public static String generateTime(long time) {
         int totalSeconds = (int) (time / 1000);
         int seconds = totalSeconds % 60;
@@ -86,5 +97,6 @@ public class VideoListAdapter extends BaseAdapter {
         ImageView iv_video_thumb;
         TextView tv_video_name;
         TextView tv_video_time;
+        TextView tv_video_size;
     }
 }

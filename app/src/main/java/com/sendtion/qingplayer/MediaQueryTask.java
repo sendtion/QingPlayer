@@ -112,7 +112,7 @@ public class MediaQueryTask extends AsyncTask<Context, Integer, List<MediaInfo>>
                     cursor.getColumnIndex(MediaStore.Video.Media.SIZE))));
             mediaInfo.setTitle(cursor.getString(
                     cursor.getColumnIndex(MediaStore.Video.Media.TITLE)));
-            mediaInfo.setModifyTime(Integer.parseInt(cursor.getString(
+            mediaInfo.setUpdateTime(Integer.parseInt(cursor.getString(
                     cursor.getColumnIndex(MediaStore.Video.Media.DATE_MODIFIED))));
 
             mediaInfo.setMediaID(cursor.getString(

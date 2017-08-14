@@ -3,6 +3,8 @@
 
     <string name="action_settings">设置</string>
     <string name="action_about">关于</string>
+    <string name="action_video_info">信息</string>
+    <string name="action_video_delete">刪除</string>
 
     <string name="title_activity_main">文件夹</string>
     <string name="title_activity_player">播放器</string>

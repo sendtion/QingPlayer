@@ -107,10 +107,21 @@ public static ** valueOf(java.lang.String);
 }
 
 # GSYVideoPlayer
--keep class tv.danmaku.ijk.** { *; }
--dontwarn tv.danmaku.ijk.**
--keep class com.shuyu.gsyvideoplayer.** { *; }
--dontwarn com.shuyu.gsyvideoplayer.**
+#-keep class tv.danmaku.ijk.** { *; }
+#-dontwarn tv.danmaku.ijk.**
+#-keep class com.shuyu.gsyvideoplayer.** { *; }
+#-dontwarn com.shuyu.gsyvideoplayer.**
+
+# For Vitamio classes
+#-keep public class io.vov.vitamio.MediaPlayer { *; }
+#-keep public class io.vov.vitamio.IMediaScannerService { *; }
+#-keep public class io.vov.vitamio.MediaScanner { *; }
+#-keep public class io.vov.vitamio.MediaScannerClient { *; }
+#-keep public class io.vov.vitamio.VitamioLicense { *; }
+#-keep public class io.vov.vitamio.Vitamio { *; }
+#-keep public class io.vov.vitamio.MediaMetadataRetriever { *; }
+-keep class io.vov.utils.** { *; }
+-keep class io.vov.vitamio.** { *; }
 
 # 友盟统计
 -keepclassmembers class * {
